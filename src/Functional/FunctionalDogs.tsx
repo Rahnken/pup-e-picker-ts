@@ -1,8 +1,6 @@
 import { DogCard } from "../Shared/DogCard";
-import { dogPictures } from "../dog-pictures";
 import { Dog } from "../types";
 
-// Right now these dogs are constant, but in reality we should be getting these from our server
 export const FunctionalDogs = ({
   dogArray,
   isLoading,
@@ -11,8 +9,6 @@ export const FunctionalDogs = ({
   isLoading: boolean;
 }) => {
   return (
-    //  the "<> </>"" are called react fragments, it's like adding all the html inside
-    // without adding an actual html element
     <>
       {dogArray.map((dog) => {
         return (
