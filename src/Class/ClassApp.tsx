@@ -22,9 +22,10 @@ export class ClassApp extends Component<Record<string, never>, State> {
     this.setState({ isLoading: true });
     Requests.getAllDogs()
       .then((result) => {
-        this.setState({ dogArray: result }, () =>
-          this.calculateFavouriteCount(result)
-        );
+        if (result)
+          this.setState({ dogArray: result }, () =>
+            this.calculateFavouriteCount(result)
+          );
       })
       .catch((error) => {
         console.error("Failed to fetch dogs:", error);
