@@ -22,7 +22,7 @@ const db = {
     name: `${capitalize(faker.person.firstName())}`,
     image: sample(images),
     description: faker.word.words(sample([8, 5, 7])),
-    isFavorite: sample([true, false]),
+    isFavourite: sample([true, false]),
     id,
   })),
 };
