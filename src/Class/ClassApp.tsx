@@ -36,6 +36,10 @@ export class ClassApp extends Component<Record<string, never>, State> {
       });
   };
 
+  createDog = (dog: Omit<Dog, "id">) => {
+    Requests.postDog(dog).then(this.fetchDogs);
+  };
+
   calculateFavouriteCount(allDogs: Dog[]): void {
     const favouritedDogs = allDogs.filter((dog) => dog.isFavourite);
     this.setState({ favouriteCount: favouritedDogs.length });
@@ -57,7 +61,7 @@ export class ClassApp extends Component<Record<string, never>, State> {
           totalCount={dogArray.length}
         >
           <ClassDogs dogArray={dogArray} isLoading={isLoading} />
-          <ClassCreateDogForm />
+          <ClassCreateDogForm createDog={this.createDog} />
         </ClassSection>
       </div>
     );

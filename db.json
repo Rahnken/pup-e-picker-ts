@@ -139,6 +139,20 @@
       "description": "eek wiretap jiffy until along isogloss nor",
       "isFavourite": false,
       "id": 19
+    },
+    {
+      "name": "Billy",
+      "description": "this is more then 15 characters",
+      "image": "/assets/blue-heeler.png",
+      "isFavourite": false,
+      "id": 22
+    },
+    {
+      "name": "Chhuais",
+      "description": " akjvbebvqanvbhbvenve",
+      "image": "/assets/chihuahua.avif",
+      "isFavourite": false,
+      "id": 23
     }
   ]
 }
