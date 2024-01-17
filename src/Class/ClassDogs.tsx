@@ -1,16 +1,19 @@
 import { DogCard } from "../Shared/DogCard";
 import { Component } from "react";
 import { Dog } from "../types";
+import { Requests } from "../api";
 
 // Right now these dogs are constant, but in reality we should be getting these from our server
 
 type Props = {
   dogArray: Dog[];
   isLoading: boolean;
+  updateDog: (id: number) => void;
+  deleteDog: (id: number) => void;
 };
 export class ClassDogs extends Component<Props> {
   render() {
-    const { dogArray, isLoading } = this.props;
+    const { dogArray, isLoading, updateDog, deleteDog } = this.props;
     return (
       <>
         {dogArray.map((dog) => {
@@ -19,16 +22,13 @@ export class ClassDogs extends Component<Props> {
               dog={dog}
               key={dog.id}
               onTrashIconClick={() => {
-                // Remove Dog from array & DB
-                alert("clicked trash");
+                deleteDog(dog.id);
               }}
               onHeartClick={() => {
-                // Add Dog to Favs
-                alert("clicked heart");
+                updateDog(dog.id);
               }}
               onEmptyHeartClick={() => {
-                // Remove Dog from Favs
-                alert("clicked empty heart");
+                updateDog(dog.id);
               }}
               // Needs to be updated when fetch call is happening
 

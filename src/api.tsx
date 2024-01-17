@@ -1,11 +1,11 @@
 import { Dog } from "./types";
 
-export const baseUrl = "http://localhost:3000";
+export const BASE_URL = "http://localhost:3000";
 
 export const Requests = {
   // should return a promise with all dogs in the database
   getAllDogs: (): Promise<Dog[]> => {
-    return fetch(`${baseUrl}/dogs`, {
+    return fetch(`${BASE_URL}/dogs`, {
       method: "GET",
       redirect: "follow",
     })
@@ -19,7 +19,7 @@ export const Requests = {
   // should create a dog in the database from a partial dog object
   // and return a promise with the result
   postDog: (dog: Omit<Dog, "id">) => {
-    return fetch(`${baseUrl}/dogs`, {
+    return fetch(`${BASE_URL}/dogs`, {
       method: "POST",
       redirect: "follow",
       body: JSON.stringify(dog),
@@ -32,9 +32,26 @@ export const Requests = {
   },
 
   // should delete a dog from the database
-  deleteDog: () => {},
+  deleteDog: (id: number) => {
+    return fetch(`${BASE_URL}/dogs/${id}`, {
+      method: "DELETE",
+      redirect: "follow",
+    })
+      .then((response) => response.json())
+      .catch((error) => console.log(error));
+  },
 
-  updateDog: () => {},
+  updateDog: (id: number, dog: Omit<Dog, "id">) => {
+    return fetch(`${BASE_URL}/dogs/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(dog),
+      headers: {
+        "CONTENT-TYPE": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .catch((error) => console.error(error));
+  },
 
   // Just a dummy function for use in the playground
   dummyFunction: () => {},

@@ -139,14 +139,14 @@ You should use conditional rendering to show different components inside of the 
 
 ## Interacting With Fetch Calls
 
-- [ ] When the component loads, you should fetch all of the dogs from the server and store them in state
-- [ ] That state should be used to render all the appropriate `DogCards` on the page
-- [ ] Dogs where isFavorite is true should have a red heart
-- [ ] Dogs where isFavorite is false should have a gray heart
-- [ ] Clicking a gray heart on a dog should turn it red and update the database to set `isFavorite` to `true`
-- [ ] Clicking a red heart on a dog should turn it gray and update the database to set `isFavorite` to `false`
-- [ ] Clicking the trash icon on a dog should delete it from the database and update the list of dogs on the page
-- [ ] Creating a dog should add it to the database and update the list of dogs on the page
+- [x] When the component loads, you should fetch all of the dogs from the server and store them in state
+- [x] That state should be used to render all the appropriate `DogCards` on the page
+- [x] Dogs where isFavorite is true should have a red heart
+- [x] Dogs where isFavorite is false should have a gray heart
+- [x] Clicking a gray heart on a dog should turn it red and update the database to set `isFavorite` to `true`
+- [x] Clicking a red heart on a dog should turn it gray and update the database to set `isFavorite` to `false`
+- [x] Clicking the trash icon on a dog should delete it from the database and update the list of dogs on the page
+- [x] Creating a dog should add it to the database and update the list of dogs on the page
 
 ## Loading States
 
