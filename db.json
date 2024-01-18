@@ -11,7 +11,7 @@
       "name": "Stephan",
       "image": "/assets/chihuahua.avif",
       "description": "cleverly ick anenst what subdued palatalize cluttered beautifully",
-      "isFavourite": false,
+      "isFavourite": true,
       "id": 1
     },
     {
@@ -46,7 +46,7 @@
       "name": "Garth",
       "image": "/assets/boxer.png",
       "description": "enormously while negotiate windsurf that sidecar exemplify even",
-      "isFavourite": false,
+      "isFavourite": true,
       "id": 7
     },
     {
@@ -132,6 +132,13 @@
       "description": "eek wiretap jiffy until along isogloss nor",
       "isFavourite": false,
       "id": 19
+    },
+    {
+      "name": "sbe",
+      "description": "sonetimen zfenkengf",
+      "image": "/assets/chihuahua.avif",
+      "isFavourite": false,
+      "id": 21
     }
   ]
 }

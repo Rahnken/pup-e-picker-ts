@@ -1,6 +1,7 @@
 // you can use `ReactNode` to add a type to the children prop
 import { Component, ReactNode } from "react";
 import { Link } from "react-router-dom";
+import { TFilterValues } from "../types";
 
 type Props = {
   totalCount: number;
@@ -10,24 +11,22 @@ type Props = {
   filterUnfavourited: () => void;
   resetDogArray: () => void;
   setShowForm: () => void;
+  isActiveFilter: TFilterValues;
+  setActiveFilter: (value: TFilterValues) => void;
 };
-type State = {
-  isActiveFilter: "favourite" | "unfavourite" | "form" | "all";
-};
-export class ClassSection extends Component<Props, State> {
-  state: State = {
-    isActiveFilter: "all",
-  };
+
+export class ClassSection extends Component<Props> {
   render() {
     const {
       favouriteCount,
       children,
       totalCount,
+      isActiveFilter,
       filterFavourites,
       filterUnfavourited,
       resetDogArray,
+      setActiveFilter,
     } = this.props;
-    const { isActiveFilter } = this.state;
     return (
       <section id="main-section">
         <div className="container-header">
@@ -47,9 +46,9 @@ export class ClassSection extends Component<Props, State> {
                 // this is how we filter all the things I think , going to have to check
                 if (isActiveFilter !== "favourite") {
                   filterFavourites();
-                  this.setState({ isActiveFilter: "favourite" });
+                  setActiveFilter("favourite");
                 } else {
-                  this.setState({ isActiveFilter: "all" });
+                  setActiveFilter("none");
                   resetDogArray();
                 }
               }}
@@ -65,9 +64,9 @@ export class ClassSection extends Component<Props, State> {
               onClick={() => {
                 if (isActiveFilter !== "unfavourite") {
                   filterUnfavourited();
-                  this.setState({ isActiveFilter: "unfavourite" });
+                  setActiveFilter("unfavourite");
                 } else {
-                  this.setState({ isActiveFilter: "all" });
+                  setActiveFilter("none");
                   resetDogArray();
                 }
               }}
@@ -80,10 +79,10 @@ export class ClassSection extends Component<Props, State> {
               }`}
               onClick={() => {
                 if (isActiveFilter !== "form") {
-                  this.setState({ isActiveFilter: "form" });
+                  setActiveFilter("form");
                   this.props.setShowForm();
                 } else {
-                  this.setState({ isActiveFilter: "all" });
+                  setActiveFilter("none");
                   resetDogArray();
                 }
               }}

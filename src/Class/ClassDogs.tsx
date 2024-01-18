@@ -1,7 +1,6 @@
 import { DogCard } from "../Shared/DogCard";
 import { Component } from "react";
 import { Dog } from "../types";
-import { Requests } from "../api";
 
 // Right now these dogs are constant, but in reality we should be getting these from our server
 

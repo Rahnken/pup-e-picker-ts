@@ -2,7 +2,7 @@ import { Component } from "react";
 import { ClassSection } from "./ClassSection";
 import { ClassDogs } from "./ClassDogs";
 import { ClassCreateDogForm } from "./ClassCreateDogForm";
-import { Dog } from "../types";
+import { Dog, TFilterValues } from "../types";
 import { Requests } from "../api";
 
 type State = {
@@ -10,7 +10,8 @@ type State = {
   dogArray: Dog[];
   isLoading: boolean;
   unfilteredTotal: number;
-  showForm: boolean;
+  shouldShowForm: boolean;
+  isActiveFilter: TFilterValues;
 };
 
 export class ClassApp extends Component<Record<string, never>, State> {
@@ -19,7 +20,8 @@ export class ClassApp extends Component<Record<string, never>, State> {
     dogArray: [],
     isLoading: false,
     unfilteredTotal: 0,
-    showForm: false,
+    shouldShowForm: false,
+    isActiveFilter: "none",
   };
 
   fetchDogs = () => {
@@ -37,7 +39,11 @@ export class ClassApp extends Component<Record<string, never>, State> {
         this.setState({ dogArray: [] }); // Set to an empty array in case of error
       })
       .finally(() => {
-        this.setState({ isLoading: false, showForm: false });
+        this.setState({
+          isLoading: false,
+          shouldShowForm: false,
+          isActiveFilter: "none",
+        });
       });
   };
 
@@ -54,15 +60,13 @@ export class ClassApp extends Component<Record<string, never>, State> {
     this.setState({ isLoading: true });
     Requests.getAllDogs()
       .then((result) => result.filter((dog) => dog.isFavourite))
-      .then((data) => this.setState({ dogArray: data }));
-    this.setState({ isLoading: false });
+      .then((data) => this.setState({ dogArray: data, isLoading: false }));
   };
   filterUnFavDogs = () => {
     this.setState({ isLoading: true });
     Requests.getAllDogs()
       .then((result) => result.filter((dog) => !dog.isFavourite))
-      .then((data) => this.setState({ dogArray: data }));
-    this.setState({ isLoading: false });
+      .then((data) => this.setState({ dogArray: data, isLoading: false }));
   };
   resetDogArray = () => {
     this.fetchDogs();
@@ -76,13 +80,16 @@ export class ClassApp extends Component<Record<string, never>, State> {
     const remainingDogs = this.state.dogArray.filter(
       (dog: Dog) => dog.id !== id
     );
-    this.setState({ dogArray: remainingDogs });
+    this.setState({ dogArray: remainingDogs, isLoading: true });
     Requests.deleteDog(id).then(this.fetchDogs);
   };
   setShowForm = () => {
     this.setState({
-      showForm: true,
+      shouldShowForm: true,
     });
+  };
+  setActiveFilter = (value: TFilterValues) => {
+    this.setState({ isActiveFilter: value });
   };
 
   componentDidMount() {
@@ -95,7 +102,8 @@ export class ClassApp extends Component<Record<string, never>, State> {
       dogArray,
       isLoading,
       unfilteredTotal,
-      showForm,
+      shouldShowForm,
+      isActiveFilter,
     } = this.state;
     return (
       <div className="App" style={{ backgroundColor: "goldenrod" }}>
@@ -109,8 +117,10 @@ export class ClassApp extends Component<Record<string, never>, State> {
           filterUnfavourited={this.filterUnFavDogs}
           resetDogArray={this.resetDogArray}
           setShowForm={this.setShowForm}
+          isActiveFilter={isActiveFilter}
+          setActiveFilter={this.setActiveFilter}
         >
-          {!showForm ? (
+          {!shouldShowForm ? (
             <ClassDogs
               dogArray={dogArray}
               isLoading={isLoading}

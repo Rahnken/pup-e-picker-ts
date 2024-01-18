@@ -6,3 +6,5 @@ export type Dog = {
   isFavourite: boolean;
   name: string;
 };
+
+export type TFilterValues = "favourite" | "unfavourite" | "form" | "none";

@@ -9,6 +9,7 @@ type State = {
   name: string;
   description: string;
   pictureUrl: string;
+  isSubmitting: boolean;
 };
 const defaultSelectedImage = dogPictures.BlueHeeler;
 
@@ -17,12 +18,22 @@ export class ClassCreateDogForm extends Component<TFormProp, State> {
     name: "",
     description: "",
     pictureUrl: defaultSelectedImage,
+    isSubmitting: false,
   };
 
   isValidDog() {
     const { name, description } = this.state;
     return name.length > 2 && description.length > 15;
   }
+  resetForm = () => {
+    this.setState({
+      name: "",
+      description: "",
+      pictureUrl: defaultSelectedImage,
+      isSubmitting: false,
+    });
+  };
+
   render() {
     return (
       <form
@@ -31,6 +42,7 @@ export class ClassCreateDogForm extends Component<TFormProp, State> {
         onSubmit={(e) => {
           e.preventDefault();
           if (this.isValidDog()) {
+            this.setState({ isSubmitting: true });
             const { name, description, pictureUrl } = this.state;
             this.props.createDog({
               name: name,
@@ -39,6 +51,7 @@ export class ClassCreateDogForm extends Component<TFormProp, State> {
               isFavourite: false,
             });
           }
+          this.resetForm();
         }}
       >
         <h4>Create a New Dog</h4>
@@ -76,7 +89,11 @@ export class ClassCreateDogForm extends Component<TFormProp, State> {
             );
           })}
         </select>
-        <input type="submit" value="submit" disabled={false} />
+        <input
+          type="submit"
+          value="Submit"
+          disabled={!this.isValidDog() && !this.state.isSubmitting}
+        />
       </form>
     );
   }

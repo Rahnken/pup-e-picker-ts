@@ -57,11 +57,11 @@ body {
 }
 #create-dog-form input[type="submit"] {
   margin-top: 20px;
-  color: black;
+  color: whitesmoke;
 }
 
 #create-dog-form input {
-  color: black;
+  color: whitesmoke;
   font-size: 30px;
   margin-left: 10px;
 }
@@ -75,7 +75,7 @@ body {
 }
 
 #create-dog-form select {
-  color: black;
+  color: whitesmoke;
   font-size: 30px;
   margin-left: 10px;
 }
