@@ -11,7 +11,7 @@ type Props = {
   filterUnfavourited: () => void;
   resetDogArray: () => void;
   setShowForm: () => void;
-  isActiveFilter: TFilterValues;
+  activeFilter: TFilterValues;
   setActiveFilter: (value: TFilterValues) => void;
 };
 
@@ -21,7 +21,7 @@ export class ClassSection extends Component<Props> {
       favouriteCount,
       children,
       totalCount,
-      isActiveFilter,
+      activeFilter,
       filterFavourites,
       filterUnfavourited,
       resetDogArray,
@@ -40,11 +40,11 @@ export class ClassSection extends Component<Props> {
             {/* This should display the favorited count */}
             <div
               className={`selector ${
-                isActiveFilter === "favourite" ? "active" : ""
+                activeFilter === "favourite" ? "active" : ""
               }`}
               onClick={() => {
                 // this is how we filter all the things I think , going to have to check
-                if (isActiveFilter !== "favourite") {
+                if (activeFilter !== "favourite") {
                   filterFavourites();
                   setActiveFilter("favourite");
                 } else {
@@ -59,10 +59,10 @@ export class ClassSection extends Component<Props> {
             {/* This should display the unfavorited count */}
             <div
               className={`selector ${
-                isActiveFilter === "unfavourite" ? "active" : ""
+                activeFilter === "unfavourite" ? "active" : ""
               }`}
               onClick={() => {
-                if (isActiveFilter !== "unfavourite") {
+                if (activeFilter !== "unfavourite") {
                   filterUnfavourited();
                   setActiveFilter("unfavourite");
                 } else {
@@ -74,11 +74,9 @@ export class ClassSection extends Component<Props> {
               unfavorited ( {totalCount - favouriteCount} )
             </div>
             <div
-              className={`selector ${
-                isActiveFilter === "form" ? "active" : ""
-              }`}
+              className={`selector ${activeFilter === "form" ? "active" : ""}`}
               onClick={() => {
-                if (isActiveFilter !== "form") {
+                if (activeFilter !== "form") {
                   setActiveFilter("form");
                   this.props.setShowForm();
                 } else {

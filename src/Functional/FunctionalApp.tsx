@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import { FunctionalCreateDogForm } from "./FunctionalCreateDogForm";
 import { FunctionalDogs } from "./FunctionalDogs";
 import { FunctionalSection } from "./FunctionalSection";
-import { Dog } from "../types";
+import { Dog, TFilterValues } from "../types";
 import { Requests } from "../api";
 
 export function FunctionalApp() {
   const [favouriteCount, setFavouriteCount] = useState(0);
   const [dogArray, setDogArray] = useState<Dog[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [unfilteredTotal, setUnfilteredTotal] = useState(0);
+  const [shouldShowForm, setShouldShowForm] = useState(false);
+  const [activeFilter, setActiveFilter] = useState<TFilterValues>("none");
 
   const fetchDogs = () => {
     setIsLoading(true);
@@ -17,12 +20,57 @@ export function FunctionalApp() {
         setDogArray(result as Dog[]);
         setFavouriteCount(calculateFavouriteCount(result as Dog[]));
       })
+
       .catch((error) => {
         console.error("Failed to fetch dogs", error);
         setDogArray([]);
+      })
+      .finally(() => {
+        setIsLoading(false);
+
+        setShouldShowForm(false);
+        setActiveFilter("none");
       });
-    setIsLoading(false);
   };
+  const createDog = (dog: Omit<Dog, "id">) => {
+    Requests.postDog(dog).then(fetchDogs);
+  };
+
+  const updateDog = (id: number) => {
+    const foundDog = dogArray.find((dog: Dog) => dog.id === id);
+    foundDog!.isFavourite = !foundDog!.isFavourite;
+    Requests.updateDog(foundDog!.id, foundDog!).then(fetchDogs);
+  };
+  const deleteDog = (id: number) => {
+    const remainingDogs = dogArray.filter((dog: Dog) => dog.id !== id);
+
+    Requests.deleteDog(id).then(() => {
+      fetchDogs;
+      setDogArray(remainingDogs);
+    });
+  };
+  // These might be abstractable but I'm doing it this way for readability
+  // ---
+  const filterFavDogs = () => {
+    setIsLoading(true);
+    Requests.getAllDogs()
+      .then((result) => result.filter((dog) => dog.isFavourite))
+      .then((data) => {
+        setDogArray(data);
+      })
+      .finally(() => setIsLoading(false));
+  };
+  const filterUnFavDogs = () => {
+    setIsLoading(true);
+    Requests.getAllDogs()
+      .then((result) => result.filter((dog) => !dog.isFavourite))
+      .then((data) => {
+        setDogArray(data);
+      })
+      .finally(() => setIsLoading(false));
+  };
+
+  // --- ^^
 
   const calculateFavouriteCount = (dogs: Dog[]) => {
     return dogs.filter((dog) => dog.isFavourite).length;
@@ -32,6 +80,10 @@ export function FunctionalApp() {
     fetchDogs();
   }, []);
 
+  useEffect(() => {
+    setUnfilteredTotal(dogArray.length);
+  }, [dogArray]);
+
   return (
     <div className="App" style={{ backgroundColor: "skyblue" }}>
       <header>
@@ -39,10 +91,24 @@ export function FunctionalApp() {
       </header>
       <FunctionalSection
         favouriteCount={favouriteCount}
-        totalCount={dogArray.length}
+        totalCount={unfilteredTotal}
+        filterFavourites={filterFavDogs}
+        filterUnfavourited={filterUnFavDogs}
+        resetDogArray={fetchDogs}
+        setShowForm={setShouldShowForm}
+        activeFilter={activeFilter}
+        setActiveFilter={setActiveFilter}
       >
-        <FunctionalDogs dogArray={dogArray} isLoading={isLoading} />
-        <FunctionalCreateDogForm />
+        {shouldShowForm ? (
+          <FunctionalCreateDogForm createDog={createDog} />
+        ) : (
+          <FunctionalDogs
+            dogArray={dogArray}
+            isLoading={isLoading}
+            updateDog={updateDog}
+            deleteDog={deleteDog}
+          />
+        )}
       </FunctionalSection>
     </div>
   );

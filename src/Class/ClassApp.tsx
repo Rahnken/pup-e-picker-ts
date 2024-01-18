@@ -11,7 +11,7 @@ type State = {
   isLoading: boolean;
   unfilteredTotal: number;
   shouldShowForm: boolean;
-  isActiveFilter: TFilterValues;
+  activeFilter: TFilterValues;
 };
 
 export class ClassApp extends Component<Record<string, never>, State> {
@@ -21,7 +21,7 @@ export class ClassApp extends Component<Record<string, never>, State> {
     isLoading: false,
     unfilteredTotal: 0,
     shouldShowForm: false,
-    isActiveFilter: "none",
+    activeFilter: "none",
   };
 
   fetchDogs = () => {
@@ -42,7 +42,7 @@ export class ClassApp extends Component<Record<string, never>, State> {
         this.setState({
           isLoading: false,
           shouldShowForm: false,
-          isActiveFilter: "none",
+          activeFilter: "none",
         });
       });
   };
@@ -89,7 +89,7 @@ export class ClassApp extends Component<Record<string, never>, State> {
     });
   };
   setActiveFilter = (value: TFilterValues) => {
-    this.setState({ isActiveFilter: value });
+    this.setState({ activeFilter: value });
   };
 
   componentDidMount() {
@@ -103,7 +103,7 @@ export class ClassApp extends Component<Record<string, never>, State> {
       isLoading,
       unfilteredTotal,
       shouldShowForm,
-      isActiveFilter,
+      activeFilter,
     } = this.state;
     return (
       <div className="App" style={{ backgroundColor: "goldenrod" }}>
@@ -117,18 +117,18 @@ export class ClassApp extends Component<Record<string, never>, State> {
           filterUnfavourited={this.filterUnFavDogs}
           resetDogArray={this.resetDogArray}
           setShowForm={this.setShowForm}
-          isActiveFilter={isActiveFilter}
+          activeFilter={activeFilter}
           setActiveFilter={this.setActiveFilter}
         >
-          {!shouldShowForm ? (
+          {shouldShowForm ? (
+            <ClassCreateDogForm createDog={this.createDog} />
+          ) : (
             <ClassDogs
               dogArray={dogArray}
               isLoading={isLoading}
               updateDog={this.updateDog}
               deleteDog={this.deleteDog}
             />
-          ) : (
-            <ClassCreateDogForm createDog={this.createDog} />
           )}
         </ClassSection>
       </div>
