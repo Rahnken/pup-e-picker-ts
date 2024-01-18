@@ -25,42 +25,14 @@
       "name": "Lelia",
       "image": "/assets/boxer.png",
       "description": "consequently fool nor boohoo despite",
-      "isFavourite": true,
-      "id": 4
-    },
-    {
-      "name": "Estefania",
-      "image": "/assets/dalmation.png",
-      "description": "CD ha ack clavicle chain geez recognize item",
-      "isFavourite": true,
-      "id": 5
-    },
-    {
-      "name": "Markus",
-      "image": "/assets/dalmation.png",
-      "description": "versus frizzy hopeful unpleasant although",
-      "isFavourite": true,
-      "id": 6
-    },
-    {
-      "name": "Garth",
-      "image": "/assets/boxer.png",
-      "description": "enormously while negotiate windsurf that sidecar exemplify even",
-      "isFavourite": true,
-      "id": 7
-    },
-    {
-      "name": "Norbert",
-      "image": "/assets/boxer.png",
-      "description": "regularly next wit job whoa commonly freely as",
       "isFavourite": false,
-      "id": 8
+      "id": 4
     },
     {
       "name": "Alda",
       "image": "/assets/blue-heeler.png",
       "description": "blah till even timer hideous",
-      "isFavourite": true,
+      "isFavourite": false,
       "id": 9
     },
     {
@@ -71,38 +43,31 @@
       "id": 10
     },
     {
-      "name": "Celia",
-      "image": "/assets/cowardly.png",
-      "description": "underneath likewise ability headhunt creative times whose because",
-      "isFavourite": true,
-      "id": 11
-    },
-    {
       "name": "Arlene",
       "image": "/assets/boxer.png",
       "description": "huzzah aboard given loosely because",
-      "isFavourite": false,
+      "isFavourite": true,
       "id": 12
     },
     {
       "name": "Efren",
       "image": "/assets/boxer.png",
       "description": "yahoo shoo eek salaam grandparent",
-      "isFavourite": false,
+      "isFavourite": true,
       "id": 13
     },
     {
       "name": "Isobel",
       "image": "/assets/boxer.png",
       "description": "shrilly boohoo athwart stretch espadrille furnish elementary",
-      "isFavourite": false,
+      "isFavourite": true,
       "id": 14
     },
     {
       "name": "Maye",
       "image": "/assets/cowardly.png",
       "description": "carefree art breakthrough thorny authorize",
-      "isFavourite": false,
+      "isFavourite": true,
       "id": 15
     },
     {
@@ -120,25 +85,11 @@
       "id": 17
     },
     {
-      "name": "Vella",
-      "image": "/assets/cowardly.png",
-      "description": "boohoo nestmate automatic creative dunk",
-      "isFavourite": false,
-      "id": 18
-    },
-    {
       "name": "Jairo",
       "image": "/assets/cowardly.png",
       "description": "eek wiretap jiffy until along isogloss nor",
-      "isFavourite": false,
+      "isFavourite": true,
       "id": 19
-    },
-    {
-      "name": "sbe",
-      "description": "sonetimen zfenkengf",
-      "image": "/assets/chihuahua.avif",
-      "isFavourite": false,
-      "id": 21
     }
   ]
 }

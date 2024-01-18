@@ -12,40 +12,46 @@ export function FunctionalApp() {
   const [unfilteredTotal, setUnfilteredTotal] = useState(0);
   const [shouldShowForm, setShouldShowForm] = useState(false);
   const [activeFilter, setActiveFilter] = useState<TFilterValues>("none");
+  const [favStatusChanged, setFavStatusChanged] = useState(false);
 
   const fetchDogs = () => {
     setIsLoading(true);
     Requests.getAllDogs()
       .then((result) => {
-        setDogArray(result as Dog[]);
-        setFavouriteCount(calculateFavouriteCount(result as Dog[]));
+        const dogs = result as Dog[];
+        setDogArray(dogs);
+        setFavouriteCount(calculateFavouriteCount(dogs));
+        setUnfilteredTotal(dogs.length);
       })
-
       .catch((error) => {
         console.error("Failed to fetch dogs", error);
         setDogArray([]);
+        setUnfilteredTotal(0);
       })
       .finally(() => {
         setIsLoading(false);
-
-        setShouldShowForm(false);
-        setActiveFilter("none");
       });
   };
   const createDog = (dog: Omit<Dog, "id">) => {
     Requests.postDog(dog).then(fetchDogs);
+    setShouldShowForm(false);
+    setActiveFilter("none");
   };
 
   const updateDog = (id: number) => {
     const foundDog = dogArray.find((dog: Dog) => dog.id === id);
-    foundDog!.isFavourite = !foundDog!.isFavourite;
-    Requests.updateDog(foundDog!.id, foundDog!).then(fetchDogs);
+    if (foundDog) {
+      foundDog.isFavourite = !foundDog.isFavourite;
+      Requests.updateDog(foundDog.id, foundDog).then(() => {
+        setFavStatusChanged(true);
+      });
+    }
   };
   const deleteDog = (id: number) => {
     const remainingDogs = dogArray.filter((dog: Dog) => dog.id !== id);
 
     Requests.deleteDog(id).then(() => {
-      fetchDogs;
+      fetchDogs();
       setDogArray(remainingDogs);
     });
   };
@@ -79,10 +85,19 @@ export function FunctionalApp() {
   useEffect(() => {
     fetchDogs();
   }, []);
+  useEffect(() => {
+    fetchDogs();
+    setFavStatusChanged(false);
+  }, [favStatusChanged]);
 
   useEffect(() => {
-    setUnfilteredTotal(dogArray.length);
-  }, [dogArray]);
+    // Apply filter only when activeFilter changes and the dogs are already fetched
+    if (activeFilter === "favourite") {
+      filterFavDogs();
+    } else if (activeFilter === "unfavourite") {
+      filterUnFavDogs();
+    }
+  }, [activeFilter, dogArray.length]);
 
   return (
     <div className="App" style={{ backgroundColor: "skyblue" }}>

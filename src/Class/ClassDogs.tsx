@@ -29,8 +29,6 @@ export class ClassDogs extends Component<Props> {
               onEmptyHeartClick={() => {
                 updateDog(dog.id);
               }}
-              // Needs to be updated when fetch call is happening
-
               isLoading={isLoading}
             />
           );

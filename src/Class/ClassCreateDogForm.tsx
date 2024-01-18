@@ -35,15 +35,15 @@ export class ClassCreateDogForm extends Component<TFormProp, State> {
   };
 
   render() {
+    const { isSubmitting, name, description, pictureUrl } = this.state;
     return (
       <form
         action=""
         id="create-dog-form"
         onSubmit={(e) => {
           e.preventDefault();
+          this.setState({ isSubmitting: true });
           if (this.isValidDog()) {
-            this.setState({ isSubmitting: true });
-            const { name, description, pictureUrl } = this.state;
             this.props.createDog({
               name: name,
               description: description,
@@ -61,7 +61,7 @@ export class ClassCreateDogForm extends Component<TFormProp, State> {
           onChange={(e) => {
             this.setState({ name: e.target.value });
           }}
-          disabled={false}
+          disabled={isSubmitting}
         />
         <label htmlFor="description">Dog Description</label>
         <textarea
@@ -72,14 +72,14 @@ export class ClassCreateDogForm extends Component<TFormProp, State> {
           onChange={(e) => {
             this.setState({ description: e.target.value });
           }}
-          disabled={false}
+          disabled={isSubmitting}
         />
         <label htmlFor="picture">Select an Image</label>
         <select
           onChange={(e) => {
             this.setState({ pictureUrl: e.target.value });
           }}
-          disabled={false}
+          disabled={isSubmitting}
         >
           {Object.entries(dogPictures).map(([label, pictureValue]) => {
             return (
@@ -92,7 +92,7 @@ export class ClassCreateDogForm extends Component<TFormProp, State> {
         <input
           type="submit"
           value="Submit"
-          disabled={!this.isValidDog() && !this.state.isSubmitting}
+          disabled={!this.isValidDog() && !isSubmitting}
         />
       </form>
     );

@@ -4,9 +4,13 @@ import { Dog } from "../types";
 export const FunctionalDogs = ({
   dogArray,
   isLoading,
+  updateDog,
+  deleteDog,
 }: {
   dogArray: Dog[];
   isLoading: boolean;
+  updateDog: (id: number) => void;
+  deleteDog: (id: number) => void;
 }) => {
   return (
     <>
@@ -16,19 +20,14 @@ export const FunctionalDogs = ({
             dog={dog}
             key={dog.id}
             onTrashIconClick={() => {
-              // Remove Dog from array & DB
-              alert("clicked trash");
+              deleteDog(dog.id);
             }}
             onHeartClick={() => {
-              // Add Dog to Favs
-              alert("clicked heart");
+              updateDog(dog.id);
             }}
             onEmptyHeartClick={() => {
-              // Remove Dog from Favs
-              alert("clicked empty heart");
+              updateDog(dog.id);
             }}
-            // Needs to be updated when fetch call is happening
-
             isLoading={isLoading}
           />
         );

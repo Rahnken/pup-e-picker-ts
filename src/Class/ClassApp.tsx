@@ -12,6 +12,7 @@ type State = {
   unfilteredTotal: number;
   shouldShowForm: boolean;
   activeFilter: TFilterValues;
+  favStatusChanged: boolean;
 };
 
 export class ClassApp extends Component<Record<string, never>, State> {
@@ -22,6 +23,7 @@ export class ClassApp extends Component<Record<string, never>, State> {
     unfilteredTotal: 0,
     shouldShowForm: false,
     activeFilter: "none",
+    favStatusChanged: false,
   };
 
   fetchDogs = () => {
@@ -41,14 +43,13 @@ export class ClassApp extends Component<Record<string, never>, State> {
       .finally(() => {
         this.setState({
           isLoading: false,
-          shouldShowForm: false,
-          activeFilter: "none",
         });
       });
   };
 
   createDog = (dog: Omit<Dog, "id">) => {
     Requests.postDog(dog).then(this.fetchDogs);
+    this.setState({ activeFilter: "none", shouldShowForm: false });
   };
 
   calculateFavouriteCount(allDogs: Dog[]): void {
@@ -73,8 +74,13 @@ export class ClassApp extends Component<Record<string, never>, State> {
   };
   updateDog = (id: number) => {
     const foundDog = this.state.dogArray.find((dog: Dog) => dog.id === id);
-    foundDog!.isFavourite = !foundDog!.isFavourite;
-    Requests.updateDog(foundDog!.id, foundDog!).then(this.fetchDogs);
+    if (foundDog) {
+      foundDog.isFavourite = !foundDog.isFavourite;
+      Requests.updateDog(foundDog.id, foundDog).then(() => {
+        this.fetchDogs();
+        this.setState({ favStatusChanged: true });
+      });
+    }
   };
   deleteDog = (id: number) => {
     const remainingDogs = this.state.dogArray.filter(
@@ -95,6 +101,30 @@ export class ClassApp extends Component<Record<string, never>, State> {
   componentDidMount() {
     this.fetchDogs();
   }
+  componentDidUpdate(
+    _prevProps: Readonly<Record<string, never>>,
+    prevState: Readonly<State>,
+    _snapshot?: any
+  ): void {
+    // Check if a dog's favorite status has changed and active filter is same.
+    if (
+      this.state.favStatusChanged &&
+      prevState.activeFilter === this.state.activeFilter
+    ) {
+      this.applyActiveFilter();
+      this.setState({ favStatusChanged: false });
+    }
+  }
+
+  applyActiveFilter = () => {
+    if (this.state.activeFilter === "favourite") {
+      this.filterFavDogs();
+    } else if (this.state.activeFilter === "unfavourite") {
+      this.filterUnFavDogs();
+    } else {
+      this.resetDogArray();
+    }
+  };
 
   render() {
     const {
