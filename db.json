@@ -25,7 +25,7 @@
       "name": "Lelia",
       "image": "/assets/boxer.png",
       "description": "consequently fool nor boohoo despite",
-      "isFavourite": false,
+      "isFavourite": true,
       "id": 4
     },
     {
@@ -90,6 +90,13 @@
       "description": "eek wiretap jiffy until along isogloss nor",
       "isFavourite": true,
       "id": 19
+    },
+    {
+      "name": "Hello",
+      "description": "Sfebfbuabobcouwbv",
+      "image": "/assets/cowardly.png",
+      "isFavourite": false,
+      "id": 22
     }
   ]
 }

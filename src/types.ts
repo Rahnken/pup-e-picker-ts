@@ -7,4 +7,10 @@ export type Dog = {
   name: string;
 };
 
-export type TFilterValues = "favourite" | "unfavourite" | "form" | "none";
+export type TSelectedTab = "favourite" | "unfavourite" | "form" | "none";
+
+export type DogData = {
+  favouriteDogs: Dog[];
+  unfavouriteDogs: Dog[];
+  totalDogCount: number;
+};

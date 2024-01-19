@@ -1,28 +1,19 @@
 // you can use this type for react children if you so choose
 import { Dispatch, ReactNode, SetStateAction } from "react";
 import { Link } from "react-router-dom";
-import { TFilterValues } from "../types";
+import { TSelectedTab } from "../types";
 
 export const FunctionalSection = ({
-  favouriteCount,
-  totalCount,
-  filterFavourites,
-  filterUnfavourited,
-  resetDogArray,
-  setShowForm,
   activeFilter,
   setActiveFilter,
-
+  totalCount,
+  favouriteCount,
   children,
 }: {
-  favouriteCount: number;
+  activeFilter: TSelectedTab;
+  setActiveFilter: Dispatch<SetStateAction<TSelectedTab>>;
   totalCount: number;
-  resetDogArray: () => void;
-  filterFavourites: () => void;
-  filterUnfavourited: () => void;
-  activeFilter: TFilterValues;
-  setShowForm: Dispatch<SetStateAction<boolean>>;
-  setActiveFilter: Dispatch<SetStateAction<TFilterValues>>;
+  favouriteCount: number;
   children: ReactNode;
 }) => {
   return (
@@ -40,11 +31,9 @@ export const FunctionalSection = ({
             }`}
             onClick={() => {
               if (activeFilter !== "favourite") {
-                filterFavourites();
                 setActiveFilter("favourite");
               } else {
                 setActiveFilter("none");
-                resetDogArray();
               }
             }}
           >
@@ -58,11 +47,9 @@ export const FunctionalSection = ({
             }`}
             onClick={() => {
               if (activeFilter !== "unfavourite") {
-                filterUnfavourited();
                 setActiveFilter("unfavourite");
               } else {
                 setActiveFilter("none");
-                resetDogArray();
               }
             }}
           >
@@ -73,10 +60,8 @@ export const FunctionalSection = ({
             onClick={() => {
               if (activeFilter !== "form") {
                 setActiveFilter("form");
-                setShowForm(true);
               } else {
                 setActiveFilter("none");
-                resetDogArray;
               }
             }}
           >

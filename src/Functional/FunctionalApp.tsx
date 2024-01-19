@@ -2,17 +2,19 @@ import { useEffect, useState } from "react";
 import { FunctionalCreateDogForm } from "./FunctionalCreateDogForm";
 import { FunctionalDogs } from "./FunctionalDogs";
 import { FunctionalSection } from "./FunctionalSection";
-import { Dog, TFilterValues } from "../types";
+import { Dog, DogData, TSelectedTab } from "../types";
 import { Requests } from "../api";
 
 export function FunctionalApp() {
-  const [favouriteCount, setFavouriteCount] = useState(0);
   const [dogArray, setDogArray] = useState<Dog[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [unfilteredTotal, setUnfilteredTotal] = useState(0);
-  const [shouldShowForm, setShouldShowForm] = useState(false);
-  const [activeFilter, setActiveFilter] = useState<TFilterValues>("none");
-  const [favStatusChanged, setFavStatusChanged] = useState(false);
+  const [selectedTab, setSelectedTab] = useState<TSelectedTab>("none");
+
+  const dogData: DogData = {
+    favouriteDogs: dogArray.filter((dog) => dog.isFavourite),
+    unfavouriteDogs: dogArray.filter((dog) => !dog.isFavourite),
+    totalDogCount: dogArray.length,
+  };
 
   const fetchDogs = () => {
     setIsLoading(true);
@@ -20,13 +22,10 @@ export function FunctionalApp() {
       .then((result) => {
         const dogs = result as Dog[];
         setDogArray(dogs);
-        setFavouriteCount(calculateFavouriteCount(dogs));
-        setUnfilteredTotal(dogs.length);
       })
       .catch((error) => {
         console.error("Failed to fetch dogs", error);
         setDogArray([]);
-        setUnfilteredTotal(0);
       })
       .finally(() => {
         setIsLoading(false);
@@ -34,70 +33,37 @@ export function FunctionalApp() {
   };
   const createDog = (dog: Omit<Dog, "id">) => {
     Requests.postDog(dog).then(fetchDogs);
-    setShouldShowForm(false);
-    setActiveFilter("none");
+    setSelectedTab("none");
   };
-
   const updateDog = (id: number) => {
     const foundDog = dogArray.find((dog: Dog) => dog.id === id);
     if (foundDog) {
       foundDog.isFavourite = !foundDog.isFavourite;
-      Requests.updateDog(foundDog.id, foundDog).then(() => {
-        setFavStatusChanged(true);
-      });
+      Requests.updateDog(foundDog.id, foundDog).then(fetchDogs);
     }
   };
   const deleteDog = (id: number) => {
     const remainingDogs = dogArray.filter((dog: Dog) => dog.id !== id);
-
     Requests.deleteDog(id).then(() => {
       fetchDogs();
       setDogArray(remainingDogs);
     });
   };
-  // These might be abstractable but I'm doing it this way for readability
-  // ---
-  const filterFavDogs = () => {
-    setIsLoading(true);
-    Requests.getAllDogs()
-      .then((result) => result.filter((dog) => dog.isFavourite))
-      .then((data) => {
-        setDogArray(data);
-      })
-      .finally(() => setIsLoading(false));
-  };
-  const filterUnFavDogs = () => {
-    setIsLoading(true);
-    Requests.getAllDogs()
-      .then((result) => result.filter((dog) => !dog.isFavourite))
-      .then((data) => {
-        setDogArray(data);
-      })
-      .finally(() => setIsLoading(false));
-  };
 
-  // --- ^^
-
-  const calculateFavouriteCount = (dogs: Dog[]) => {
-    return dogs.filter((dog) => dog.isFavourite).length;
+  const dogsToDisplay = (dogData: DogData, activeTab: TSelectedTab) => {
+    switch (activeTab) {
+      case "favourite":
+        return dogData.favouriteDogs;
+      case "unfavourite":
+        return dogData.unfavouriteDogs;
+      default:
+        return dogArray;
+    }
   };
 
   useEffect(() => {
     fetchDogs();
   }, []);
-  useEffect(() => {
-    fetchDogs();
-    setFavStatusChanged(false);
-  }, [favStatusChanged]);
-
-  useEffect(() => {
-    // Apply filter only when activeFilter changes and the dogs are already fetched
-    if (activeFilter === "favourite") {
-      filterFavDogs();
-    } else if (activeFilter === "unfavourite") {
-      filterUnFavDogs();
-    }
-  }, [activeFilter, dogArray.length]);
 
   return (
     <div className="App" style={{ backgroundColor: "skyblue" }}>
@@ -105,20 +71,16 @@ export function FunctionalApp() {
         <h1>pup-e-picker (Functional)</h1>
       </header>
       <FunctionalSection
-        favouriteCount={favouriteCount}
-        totalCount={unfilteredTotal}
-        filterFavourites={filterFavDogs}
-        filterUnfavourited={filterUnFavDogs}
-        resetDogArray={fetchDogs}
-        setShowForm={setShouldShowForm}
-        activeFilter={activeFilter}
-        setActiveFilter={setActiveFilter}
+        activeFilter={selectedTab}
+        setActiveFilter={setSelectedTab}
+        totalCount={dogArray.length}
+        favouriteCount={dogData.favouriteDogs.length}
       >
-        {shouldShowForm ? (
+        {selectedTab === "form" ? (
           <FunctionalCreateDogForm createDog={createDog} />
         ) : (
           <FunctionalDogs
-            dogArray={dogArray}
+            dogArray={dogsToDisplay(dogData, selectedTab)}
             isLoading={isLoading}
             updateDog={updateDog}
             deleteDog={deleteDog}

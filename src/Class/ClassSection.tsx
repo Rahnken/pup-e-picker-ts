@@ -1,18 +1,14 @@
 // you can use `ReactNode` to add a type to the children prop
 import { Component, ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { TFilterValues } from "../types";
+import { TSelectedTab } from "../types";
 
 type Props = {
   totalCount: number;
   favouriteCount: number;
   children: ReactNode;
-  filterFavourites: () => void;
-  filterUnfavourited: () => void;
-  resetDogArray: () => void;
-  setShowForm: () => void;
-  activeFilter: TFilterValues;
-  setActiveFilter: (value: TFilterValues) => void;
+  activeFilter: TSelectedTab;
+  setActiveFilter: (value: TSelectedTab) => void;
 };
 
 export class ClassSection extends Component<Props> {
@@ -22,9 +18,6 @@ export class ClassSection extends Component<Props> {
       children,
       totalCount,
       activeFilter,
-      filterFavourites,
-      filterUnfavourited,
-      resetDogArray,
       setActiveFilter,
     } = this.props;
     return (
@@ -45,11 +38,9 @@ export class ClassSection extends Component<Props> {
               onClick={() => {
                 // this is how we filter all the things I think , going to have to check
                 if (activeFilter !== "favourite") {
-                  filterFavourites();
                   setActiveFilter("favourite");
                 } else {
                   setActiveFilter("none");
-                  resetDogArray();
                 }
               }}
             >
@@ -63,11 +54,9 @@ export class ClassSection extends Component<Props> {
               }`}
               onClick={() => {
                 if (activeFilter !== "unfavourite") {
-                  filterUnfavourited();
                   setActiveFilter("unfavourite");
                 } else {
                   setActiveFilter("none");
-                  resetDogArray();
                 }
               }}
             >
@@ -78,10 +67,8 @@ export class ClassSection extends Component<Props> {
               onClick={() => {
                 if (activeFilter !== "form") {
                   setActiveFilter("form");
-                  this.props.setShowForm();
                 } else {
                   setActiveFilter("none");
-                  resetDogArray();
                 }
               }}
             >

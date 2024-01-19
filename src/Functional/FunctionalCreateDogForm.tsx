@@ -85,7 +85,7 @@ export const FunctionalCreateDogForm = ({
       <input
         type="submit"
         value={"Submit"}
-        disabled={isValidDog() && !isSubmitting}
+        disabled={!isValidDog() && !isSubmitting}
       />
     </form>
   );

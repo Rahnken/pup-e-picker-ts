@@ -2,39 +2,36 @@ import { Component } from "react";
 import { ClassSection } from "./ClassSection";
 import { ClassDogs } from "./ClassDogs";
 import { ClassCreateDogForm } from "./ClassCreateDogForm";
-import { Dog, TFilterValues } from "../types";
+import { Dog, DogData, TSelectedTab } from "../types";
 import { Requests } from "../api";
 
 type State = {
-  favouriteCount: number;
   dogArray: Dog[];
   isLoading: boolean;
-  unfilteredTotal: number;
-  shouldShowForm: boolean;
-  activeFilter: TFilterValues;
-  favStatusChanged: boolean;
+  activeFilter: TSelectedTab;
 };
 
 export class ClassApp extends Component<Record<string, never>, State> {
   state: State = {
-    favouriteCount: 0,
     dogArray: [],
     isLoading: false,
-    unfilteredTotal: 0,
-    shouldShowForm: false,
     activeFilter: "none",
-    favStatusChanged: false,
+  };
+
+  dogData: DogData = {
+    favouriteDogs: [],
+    unfavouriteDogs: [],
+    totalDogCount: 0,
   };
 
   fetchDogs = () => {
     this.setState({ isLoading: true });
     Requests.getAllDogs()
       .then((result) => {
-        if (result)
-          this.setState(
-            { dogArray: result, unfilteredTotal: result.length },
-            () => this.calculateFavouriteCount(result)
-          );
+        if (result) {
+          this.setState({ dogArray: result });
+          this.dogData = this.calculateDogData();
+        }
       })
       .catch((error) => {
         console.error("Failed to fetch dogs:", error);
@@ -49,37 +46,14 @@ export class ClassApp extends Component<Record<string, never>, State> {
 
   createDog = (dog: Omit<Dog, "id">) => {
     Requests.postDog(dog).then(this.fetchDogs);
-    this.setState({ activeFilter: "none", shouldShowForm: false });
+    this.setState({ activeFilter: "none" });
   };
 
-  calculateFavouriteCount(allDogs: Dog[]): void {
-    const favouritedDogs = allDogs.filter((dog) => dog.isFavourite);
-    this.setState({ favouriteCount: favouritedDogs.length });
-  }
-
-  filterFavDogs = () => {
-    this.setState({ isLoading: true });
-    Requests.getAllDogs()
-      .then((result) => result.filter((dog) => dog.isFavourite))
-      .then((data) => this.setState({ dogArray: data, isLoading: false }));
-  };
-  filterUnFavDogs = () => {
-    this.setState({ isLoading: true });
-    Requests.getAllDogs()
-      .then((result) => result.filter((dog) => !dog.isFavourite))
-      .then((data) => this.setState({ dogArray: data, isLoading: false }));
-  };
-  resetDogArray = () => {
-    this.fetchDogs();
-  };
   updateDog = (id: number) => {
     const foundDog = this.state.dogArray.find((dog: Dog) => dog.id === id);
     if (foundDog) {
       foundDog.isFavourite = !foundDog.isFavourite;
-      Requests.updateDog(foundDog.id, foundDog).then(() => {
-        this.fetchDogs();
-        this.setState({ favStatusChanged: true });
-      });
+      Requests.updateDog(foundDog.id, foundDog).then(this.fetchDogs);
     }
   };
   deleteDog = (id: number) => {
@@ -89,72 +63,53 @@ export class ClassApp extends Component<Record<string, never>, State> {
     this.setState({ dogArray: remainingDogs, isLoading: true });
     Requests.deleteDog(id).then(this.fetchDogs);
   };
-  setShowForm = () => {
-    this.setState({
-      shouldShowForm: true,
-    });
-  };
-  setActiveFilter = (value: TFilterValues) => {
+
+  setActiveFilter = (value: TSelectedTab) => {
     this.setState({ activeFilter: value });
   };
 
   componentDidMount() {
     this.fetchDogs();
   }
-  componentDidUpdate(
-    _prevProps: Readonly<Record<string, never>>,
-    prevState: Readonly<State>,
-    _snapshot?: any
-  ): void {
-    // Check if a dog's favorite status has changed and active filter is same.
-    if (
-      this.state.favStatusChanged &&
-      prevState.activeFilter === this.state.activeFilter
-    ) {
-      this.applyActiveFilter();
-      this.setState({ favStatusChanged: false });
-    }
+
+  calculateDogData() {
+    return {
+      favouriteDogs: this.state.dogArray.filter((dog) => dog.isFavourite),
+      unfavouriteDogs: this.state.dogArray.filter((dog) => !dog.isFavourite),
+      totalDogCount: this.state.dogArray.length,
+    };
   }
 
-  applyActiveFilter = () => {
-    if (this.state.activeFilter === "favourite") {
-      this.filterFavDogs();
-    } else if (this.state.activeFilter === "unfavourite") {
-      this.filterUnFavDogs();
-    } else {
-      this.resetDogArray();
+  dogsToDisplay = (dogData: DogData, activeTab: TSelectedTab) => {
+    switch (activeTab) {
+      case "favourite":
+        return dogData.favouriteDogs;
+      case "unfavourite":
+        return dogData.unfavouriteDogs;
+      default:
+        return this.state.dogArray;
     }
   };
 
   render() {
-    const {
-      favouriteCount,
-      dogArray,
-      isLoading,
-      unfilteredTotal,
-      shouldShowForm,
-      activeFilter,
-    } = this.state;
+    const { isLoading, activeFilter } = this.state;
+    const { favouriteDogs, totalDogCount } = this.dogData;
     return (
       <div className="App" style={{ backgroundColor: "goldenrod" }}>
         <header>
           <h1>pup-e-picker (Class Version)</h1>
         </header>
         <ClassSection
-          favouriteCount={favouriteCount}
-          totalCount={unfilteredTotal}
-          filterFavourites={this.filterFavDogs}
-          filterUnfavourited={this.filterUnFavDogs}
-          resetDogArray={this.resetDogArray}
-          setShowForm={this.setShowForm}
+          favouriteCount={favouriteDogs.length}
+          totalCount={totalDogCount}
           activeFilter={activeFilter}
           setActiveFilter={this.setActiveFilter}
         >
-          {shouldShowForm ? (
+          {activeFilter === "form" ? (
             <ClassCreateDogForm createDog={this.createDog} />
           ) : (
             <ClassDogs
-              dogArray={dogArray}
+              dogArray={this.dogsToDisplay(this.dogData, activeFilter)}
               isLoading={isLoading}
               updateDog={this.updateDog}
               deleteDog={this.deleteDog}
