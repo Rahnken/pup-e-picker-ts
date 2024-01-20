@@ -10,11 +10,7 @@ export const Requests = {
       redirect: "follow",
     })
       .then((response) => response.json())
-      .then((data) => data as Dog[])
-      .catch((error) => {
-        console.error("error", error);
-        return [];
-      });
+      .then((data) => data);
   },
   // should create a dog in the database from a partial dog object
   // and return a promise with the result
@@ -26,9 +22,10 @@ export const Requests = {
       headers: {
         "CONTENT-TYPE": "application/json",
       },
-    })
-      .then((response) => response.json())
-      .catch((error) => console.error(error));
+    }).then((response) => {
+      if (!response.ok) throw Error("Unable to Create Dog");
+      return response.json();
+    });
   },
 
   // should delete a dog from the database
@@ -36,21 +33,23 @@ export const Requests = {
     return fetch(`${BASE_URL}/dogs/${id}`, {
       method: "DELETE",
       redirect: "follow",
-    })
-      .then((response) => response.json())
-      .catch((error) => console.log(error));
+    }).then((response) => {
+      if (!response.ok) throw Error("Unable to Delete Dog");
+      return response.json();
+    });
   },
 
-  updateDog: (id: number, dog: Omit<Dog, "id">) => {
+  updateDog: (id: number, isFavourite: boolean) => {
     return fetch(`${BASE_URL}/dogs/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(dog),
+      method: "PATCH",
+      body: JSON.stringify({ isFavourite: isFavourite }),
       headers: {
         "CONTENT-TYPE": "application/json",
       },
-    })
-      .then((response) => response.json())
-      .catch((error) => console.error(error));
+    }).then((response) => {
+      if (!response.ok) throw Error("Unable to Update Dogs");
+      return response.json();
+    });
   },
 
   // Just a dummy function for use in the playground

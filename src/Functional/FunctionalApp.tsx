@@ -19,35 +19,33 @@ export function FunctionalApp() {
   const fetchDogs = () => {
     setIsLoading(true);
     Requests.getAllDogs()
-      .then((result) => {
-        const dogs = result as Dog[];
-        setDogArray(dogs);
-      })
-      .catch((error) => {
-        console.error("Failed to fetch dogs", error);
-        setDogArray([]);
-      })
+      .then((result) => setDogArray(result))
+      .catch((error) => console.error(error))
+      .finally(() => setIsLoading(false));
+  };
+  const createDog = (dog: Omit<Dog, "id">) => {
+    setIsLoading(true);
+    Requests.postDog(dog)
+      .then(fetchDogs)
       .finally(() => {
+        setSelectedTab("none");
         setIsLoading(false);
       });
   };
-  const createDog = (dog: Omit<Dog, "id">) => {
-    Requests.postDog(dog).then(fetchDogs);
-    setSelectedTab("none");
-  };
   const updateDog = (id: number) => {
+    setIsLoading(true);
     const foundDog = dogArray.find((dog: Dog) => dog.id === id);
     if (foundDog) {
-      foundDog.isFavourite = !foundDog.isFavourite;
-      Requests.updateDog(foundDog.id, foundDog).then(fetchDogs);
+      Requests.updateDog(foundDog.id, !foundDog.isFavourite)
+        .then(fetchDogs)
+        .finally(() => setIsLoading(false));
     }
   };
   const deleteDog = (id: number) => {
-    const remainingDogs = dogArray.filter((dog: Dog) => dog.id !== id);
-    Requests.deleteDog(id).then(() => {
-      fetchDogs();
-      setDogArray(remainingDogs);
-    });
+    setIsLoading(true);
+    Requests.deleteDog(id)
+      .then(() => fetchDogs())
+      .finally(() => setIsLoading(false));
   };
 
   const dogsToDisplay = (dogData: DogData, activeTab: TSelectedTab) => {

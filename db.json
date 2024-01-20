@@ -1,102 +1,123 @@
 {
   "dogs": [
     {
-      "name": "Philip",
-      "image": "/assets/boxer.png",
-      "description": "and emigrate instead modulo gosh",
-      "isFavourite": true,
+      "name": "Kassandra",
+      "image": "/assets/chihuahua.avif",
+      "description": "elaborate oh forswear shame ferociously",
+      "isFavourite": false,
       "id": 0
     },
     {
-      "name": "Stephan",
-      "image": "/assets/chihuahua.avif",
-      "description": "cleverly ick anenst what subdued palatalize cluttered beautifully",
-      "isFavourite": true,
+      "name": "Marty",
+      "image": "/assets/cowardly.png",
+      "description": "dull subsidence barring by cherish",
+      "isFavourite": false,
       "id": 1
     },
     {
-      "name": "Sunny",
-      "image": "/assets/blue-heeler.png",
-      "description": "peek since insult aboard bandana",
-      "isFavourite": true,
+      "name": "Curt",
+      "image": "/assets/corgi.png",
+      "description": "quarrelsomely psst mainstream minus fair easy selfishly",
+      "isFavourite": false,
       "id": 2
     },
     {
-      "name": "Lelia",
+      "name": "Felicia",
       "image": "/assets/boxer.png",
-      "description": "consequently fool nor boohoo despite",
+      "description": "which noxious why drat lone brr oof duh",
+      "isFavourite": true,
+      "id": 3
+    },
+    {
+      "name": "Anahi",
+      "image": "/assets/chihuahua.avif",
+      "description": "hmph faucet hubris creamy once corral outside concern",
       "isFavourite": true,
       "id": 4
     },
     {
-      "name": "Alda",
+      "name": "Sabryna",
+      "image": "/assets/chihuahua.avif",
+      "description": "likewise picket beech huzzah whenever wetly off hobbit",
+      "isFavourite": true,
+      "id": 8
+    },
+    {
+      "name": "Rose",
       "image": "/assets/blue-heeler.png",
-      "description": "blah till even timer hideous",
+      "description": "gah victoriously thoroughly jack leaven crossly popsicle",
       "isFavourite": false,
       "id": 9
     },
     {
-      "name": "Lourdes",
-      "image": "/assets/blue-heeler.png",
-      "description": "crackle authorized while arch recommendation",
+      "name": "Ferne",
+      "image": "/assets/boxer.png",
+      "description": "serene frigid gadzooks shackle up loyally afterwards",
       "isFavourite": false,
       "id": 10
     },
     {
-      "name": "Arlene",
+      "name": "Merlin",
       "image": "/assets/boxer.png",
-      "description": "huzzah aboard given loosely because",
-      "isFavourite": true,
+      "description": "pastry junior um afore on violent tiara",
+      "isFavourite": false,
+      "id": 11
+    },
+    {
+      "name": "Iva",
+      "image": "/assets/dalmation.png",
+      "description": "nicely state huzzah instead duh from juice",
+      "isFavourite": false,
       "id": 12
     },
     {
-      "name": "Efren",
+      "name": "Roderick",
       "image": "/assets/boxer.png",
-      "description": "yahoo shoo eek salaam grandparent",
-      "isFavourite": true,
+      "description": "question spit reproachfully ick yahoo enlist truss poorly",
+      "isFavourite": false,
       "id": 13
     },
     {
-      "name": "Isobel",
-      "image": "/assets/boxer.png",
-      "description": "shrilly boohoo athwart stretch espadrille furnish elementary",
-      "isFavourite": true,
+      "name": "Baby",
+      "image": "/assets/blue-heeler.png",
+      "description": "radiosonde that quiet if faithfully adolescent sympathetically",
+      "isFavourite": false,
       "id": 14
     },
     {
-      "name": "Maye",
-      "image": "/assets/cowardly.png",
-      "description": "carefree art breakthrough thorny authorize",
-      "isFavourite": true,
+      "name": "Clemens",
+      "image": "/assets/corgi.png",
+      "description": "truly wire like while what",
+      "isFavourite": false,
       "id": 15
     },
     {
-      "name": "Kirsten",
-      "image": "/assets/cowardly.png",
-      "description": "impressionable wisecrack quickly helplessly testy descale mmm",
+      "name": "Katheryn",
+      "image": "/assets/corgi.png",
+      "description": "con hunter doubtfully phew reassert besides excepting sleek",
       "isFavourite": true,
       "id": 16
     },
     {
-      "name": "Fleta",
-      "image": "/assets/blue-heeler.png",
-      "description": "frizzy ambitious gleefully instead hmph than how desert",
+      "name": "Sheila",
+      "image": "/assets/dalmation.png",
+      "description": "uh-huh spotless ick gamma-ray than innocently alpenglow juxtapose",
       "isFavourite": true,
       "id": 17
     },
     {
-      "name": "Jairo",
-      "image": "/assets/cowardly.png",
-      "description": "eek wiretap jiffy until along isogloss nor",
-      "isFavourite": true,
-      "id": 19
+      "name": "Erwin",
+      "image": "/assets/dalmation.png",
+      "description": "sharply intensely noisy geez outside",
+      "isFavourite": false,
+      "id": 18
     },
     {
-      "name": "Hello",
-      "description": "Sfebfbuabobcouwbv",
-      "image": "/assets/cowardly.png",
+      "name": "Torrey",
+      "image": "/assets/corgi.png",
+      "description": "boastfully roughly decongestant slight drat step-sister geez proscribe",
       "isFavourite": false,
-      "id": 22
+      "id": 19
     }
   ]
 }

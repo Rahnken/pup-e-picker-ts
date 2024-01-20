@@ -30,34 +30,26 @@ export class ClassSection extends Component<Props> {
           </Link>
 
           <div className="selectors">
-            {/* This should display the favorited count */}
             <div
               className={`selector ${
                 activeFilter === "favourite" ? "active" : ""
               }`}
               onClick={() => {
-                // this is how we filter all the things I think , going to have to check
-                if (activeFilter !== "favourite") {
-                  setActiveFilter("favourite");
-                } else {
-                  setActiveFilter("none");
-                }
+                activeFilter !== "favourite"
+                  ? setActiveFilter("favourite")
+                  : setActiveFilter("none");
               }}
             >
               Favourited ( {favouriteCount} )
             </div>
-
-            {/* This should display the unfavorited count */}
             <div
               className={`selector ${
                 activeFilter === "unfavourite" ? "active" : ""
               }`}
               onClick={() => {
-                if (activeFilter !== "unfavourite") {
-                  setActiveFilter("unfavourite");
-                } else {
-                  setActiveFilter("none");
-                }
+                activeFilter !== "unfavourite"
+                  ? setActiveFilter("unfavourite")
+                  : setActiveFilter("none");
               }}
             >
               unfavorited ( {totalCount - favouriteCount} )
@@ -65,11 +57,9 @@ export class ClassSection extends Component<Props> {
             <div
               className={`selector ${activeFilter === "form" ? "active" : ""}`}
               onClick={() => {
-                if (activeFilter !== "form") {
-                  setActiveFilter("form");
-                } else {
-                  setActiveFilter("none");
-                }
+                activeFilter !== "form"
+                  ? setActiveFilter("form")
+                  : setActiveFilter("none");
               }}
             >
               create dog
